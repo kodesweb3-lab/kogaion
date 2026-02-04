@@ -1,5 +1,5 @@
 /**
- * 🐺 ClawChain CLI - Wallet & Interaction Tool
+ * 🐺 Kogaion CLI - Wallet & Interaction Tool
  */
 
 import inquirer from 'inquirer';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const API_URL = 'http://localhost:3000';
 
-class ClawChainCLI {
+class KogaionCLI {
   constructor() {
     this.walletFile = path.join(__dirname, '.wallet');
     this.wallet = this.loadWallet();
@@ -29,7 +29,7 @@ class ClawChainCLI {
   }
 
   async createWallet() {
-    console.log('\n🐺 Create your ClawChain Agent Wallet\n');
+    console.log('\n🐺 Create your Kogaion Agent Wallet\n');
     
     const answers = await inquirer.prompt([
       {
@@ -58,7 +58,7 @@ class ClawChainCLI {
 
     this.saveWallet();
     console.log(`\n✅ Wallet created: ${this.wallet.name}`);
-    console.log('📝 Registering with ClawChain...');
+    console.log('📝 Registering with Kogaion...');
     
     await this.registerAgent();
   }
@@ -84,7 +84,7 @@ class ClawChainCLI {
       }
     } catch (e) {
       console.error('Registration failed:', e.message);
-      console.log('Make sure ClawChain is running (npm start)');
+      console.log('Make sure Kogaion is running (npm start)');
     }
   }
 
@@ -292,7 +292,7 @@ class ClawChainCLI {
 
   async start() {
     if (!this.wallet) {
-      console.log('\n🐺 Welcome to ClawChain CLI!\n');
+      console.log('\n🐺 Welcome to Kogaion CLI!\n');
       console.log('You need a wallet to interact with the agent blockchain.');
       const create = await inquirer.prompt([
         {
@@ -314,5 +314,5 @@ class ClawChainCLI {
   }
 }
 
-const cli = new ClawChainCLI();
+const cli = new KogaionCLI();
 cli.start();

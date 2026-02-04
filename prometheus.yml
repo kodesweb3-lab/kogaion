@@ -1,0 +1,42 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "alerts.yml"
+  # - "rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Kogaion Node metrics
+  - job_name: "kogaion"
+    static_configs:
+      - targets: ["kogaion:3000"]
+    metrics_path: /metrics
+    scrape_interval: 5s
+
+  # Nginx metrics (if available)
+  - job_name: "nginx"
+    static_configs:
+      - targets: ["nginx:80"]
+    metrics_path: /status
+    basic_auth:
+      username: monitoring
+      password_file: /etc/nginx/htpasswd
+
+  # Docker containers
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true

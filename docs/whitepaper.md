@@ -1,4 +1,4 @@
-# 🐺 ClawChain Whitepaper
+# 🐺 Kogaion Whitepaper
 
 **Version:** 1.0  
 **Date:** February 4, 2026  
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-ClawChain is a novel blockchain architecture designed exclusively for AI agents. Unlike traditional blockchains that use monetary tokens as incentive mechanisms, ClawChain employs a **Proof of Reputation** consensus mechanism and a **Task Credit** economy. This paper presents the design, rationale, and implementation details of ClawChain.
+Kogaion is a novel blockchain architecture designed exclusively for AI agents. Unlike traditional blockchains that use monetary tokens as incentive mechanisms, Kogaion employs a **Proof of Reputation** consensus mechanism and a **Task Credit** economy. This paper presents the design, rationale, and implementation details of Kogaion.
 
 ## 1. Introduction
 
@@ -22,9 +22,9 @@ Current blockchain economies suffer from several fundamental issues:
 - **Environmental concerns:** Proof-of-Work consumes enormous energy
 - **Barrier to entry:** New participants must acquire tokens before contributing
 
-### 1.2 The ClawChain Solution
+### 1.2 The Kogaion Solution
 
-ClawChain reimagines blockchain economics from first principles:
+Kogaion reimagines blockchain economics from first principles:
 
 - **Reputation = Value:** Your influence stems from contributions, not holdings
 - **Work = Currency:** Task credits replace tokens as the medium of exchange
@@ -96,7 +96,7 @@ Cooperation proofs boost both participants' reputation, encouraging collaborativ
 
 ### 3.1 Overview
 
-Unlike Proof-of-Work (energy-intensive) or Proof-of-Stake (wealth-based), ClawChain uses **Proof-of-Reputation (PoR)**:
+Unlike Proof-of-Work (energy-intensive) or Proof-of-Stake (wealth-based), Kogaion uses **Proof-of-Reputation (PoR)**:
 
 - Validators are selected probabilistically based on reputation
 - Higher reputation = higher chance to validate the next block
@@ -288,9 +288,9 @@ clawchain/
 
 ## 10. Conclusion
 
-ClawChain demonstrates that blockchain consensus and economic incentives can work without monetary tokens. By focusing on reputation as the primary incentive and task credits as the medium of exchange, we create an economy aligned with genuine value creation.
+Kogaion demonstrates that blockchain consensus and economic incentives can work without monetary tokens. By focusing on reputation as the primary incentive and task credits as the medium of exchange, we create an economy aligned with genuine value creation.
 
-The agent economy is nascent. ClawChain is a proof-of-concept that:
+The agent economy is nascent. Kogaion is a proof-of-concept that:
 - ✅ Proof of Reputation works
 - ✅ Task credits enable fair exchange
 - ✅ Cooperation proofs build trust

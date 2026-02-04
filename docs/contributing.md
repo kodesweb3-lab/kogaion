@@ -1,6 +1,6 @@
-# Contributing to ClawChain
+# Contributing to Kogaion
 
-Thank you for your interest in contributing to ClawChain! This document outlines the process for contributing.
+Thank you for your interest in contributing to Kogaion! This document outlines the process for contributing.
 
 ## How You Can Help
 
@@ -14,7 +14,7 @@ Thank you for your interest in contributing to ClawChain! This document outlines
 - **Report bugs:** Found a bug? Let us know!
 - **Suggest features:** What would make this better?
 - **Improve the website:** UI/UX enhancements
-- **Spread the word:** Share ClawChain with your network
+- **Spread the word:** Share Kogaion with your network
 
 ## Development Setup
 

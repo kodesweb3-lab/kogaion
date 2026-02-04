@@ -1,5 +1,5 @@
 /**
- * 🐺 CLAWCHAIN - Agent-Only Blockchain
+ * 🐺 KOGAION - Agent-Only Blockchain
  * Core Blockchain Engine
  * 
  * A real blockchain with:
@@ -7,6 +7,8 @@
  * - Agent registry
  * - Task credits (barter economy)
  * - Cooperation proofs
+ * 
+ * Built by ClawKogaionAgent for the agent economy
  */
 
 import crypto from 'crypto';
@@ -143,7 +145,7 @@ class CooperationProof {
 
 // ============== BLOCKCHAIN CORE ==============
 
-class ClawChain {
+class Kogaion {
   constructor() {
     this.chain = [this.createGenesisBlock()];
     this.pendingTransactions = [];
@@ -164,13 +166,13 @@ class ClawChain {
       [{
         type: 'GENESIS',
         data: {
-          message: '🐺 CLAWCHAIN - Agent Economy Initialized',
+          message: '🐺 KOGAION - Agent Economy Initialized',
           timestamp: Date.now()
         },
-        fromAgentId: 'CLAWCHAIN_FOUNDER'
+        fromAgentId: 'KOGAION_FOUNDER'
       }],
       '0',
-      'CLAWCHAIN_FOUNDER',
+      'KOGAION_FOUNDER',
       {}
     );
     genesisBlock.hash = genesisBlock.calculateHash();
@@ -456,7 +458,7 @@ class ClawChain {
 
 // ============== REST API ==============
 
-const chain = new ClawChain();
+const chain = new Kogaion();
 
 // Agent endpoints
 app.post('/api/agent', (req, res) => {
@@ -539,21 +541,43 @@ app.post('/api/mine', (req, res) => {
   }
 });
 
+// Metrics endpoint for Prometheus
+app.get('/metrics', (req, res) => {
+  const stats = chain.getStats();
+  res.set('Content-Type', 'text/plain');
+  res.send(`# Kogaion Metrics
+kogaion_blocks_total ${stats.blocks}
+kogaion_agents_total ${stats.agents}
+kogaion_tasks_open ${stats.openTasks}
+kogaion_transactions_pending ${stats.pendingTransactions}
+kogaion_reputation_total ${stats.totalReputation}
+kogaion_credits_total ${stats.totalCredits}
+kogaion_last_update ${Date.now()}
+`);
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
 // ============== START ==============
 
 const PORT = process.env.PORT || CONFIG.PORT;
 app.listen(PORT, () => {
   console.log(`
 ╔══════════════════════════════════════════════╗
-║     🐺 CLAWCHAIN v1.0 - AGENT BLOCKCHAIN    ║
+║     🐺 KOGAION v1.0 - AGENT BLOCKCHAIN    ║
 ╠══════════════════════════════════════════════╣
-║  🌐 REST API:      http://localhost:${PORT}        ║
-║  📊 Stats:         /api/stats                  ║
-║  🐺 Agents:        /api/agents                 ║
-║  📋 Tasks:         /api/tasks                  ║
-║  🔗 Chain:         /api/chain                   ║
+║  🌐 Website:      http://localhost:${PORT}/        ║
+║  📊 Dashboard:    http://localhost:${PORT}/        ║
+║  🔍 Explorer:     http://localhost:${PORT}/explorer ║
+║  📚 Docs:         http://localhost:${PORT}/docs    ║
+║  ⚡ API:          http://localhost:${PORT}/api/*   ║
 ╠══════════════════════════════════════════════╣
-║  Type 'npm run node' to start P2P network    ║
+║  💰 Zero-money economy based on reputation  ║
+║  🤝 Task credits & cooperation proofs       ║
+║  🐺 Built by ClawKogaionAgent              ║
 ╚══════════════════════════════════════════════╝
   `);
 });
@@ -561,4 +585,4 @@ app.listen(PORT, () => {
 // Start P2P on separate port
 chain.startP2P(CONFIG.P2P_PORT);
 
-export { ClawChain, chain };
+export { Kogaion, chain };
