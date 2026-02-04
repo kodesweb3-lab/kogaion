@@ -484,3 +484,134 @@ if (agent.canValidate()) {
   await agent.mineBlock();
 }
 */
+
+// ============== TOKEN LAUNCHPAD ==============
+
+/**
+ * 🪙 Kogaion Token Launchpad SDK
+ * 
+ * Agents can create tokens and earn developer fees.
+ * 
+ * Fee Structure:
+ * - Create Token: 50 credits (80% to developer)
+ * - Update Metadata: 10 credits (80% to developer)
+ * 
+ * Example:
+ * ```javascript
+ * import { KogaionTokenLaunchpad } from 'kogaion-agent-sdk.js';
+ * 
+ * const tokens = new KogaionTokenLaunchpad();
+ * 
+ * // Get fee schedule
+ * const fees = await tokens.getFeeSchedule();
+ * 
+ * // Create a token
+ * const result = await tokens.create({
+ *   name: 'Wolf Coin',
+ *   symbol: 'WOLF',
+ *   developer: agent.agentId,
+ *   supply: 1000000
+ * });
+ * 
+ * console.log(result.token.address);
+ * ```
+ */
+export class KogaionTokenLaunchpad {
+  constructor(config = {}) {
+    this.apiUrl = config.apiUrl || 'http://localhost:3000';
+  }
+  
+  /**
+   * Get current fee schedule
+   * @returns {Promise<object>} Fee info
+   */
+  async getFeeSchedule() {
+    const response = await fetch(`${this.apiUrl}/api/tokens/fees`);
+    return response.json();
+  }
+  
+  /**
+   * Create a new token
+   * @param {object} params - Token parameters
+   * @param {string} params.name - Token name
+   * @param {string} params.symbol - Token symbol
+   * @param {string} params.developer - Developer/agent ID
+   * @param {number} [params.supply=1000000] - Total supply
+   * @param {number} [params.decimals=9] - Decimal places
+   * @returns {Promise<object>} Token creation result
+   */
+  async createToken({ name, symbol, developer, supply = 1000000, decimals = 9 }) {
+    const response = await fetch(`${this.apiUrl}/api/tokens/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        symbol: symbol.toUpperCase(),
+        developer,
+        supply,
+        decimals
+      })
+    });
+    
+    return response.json();
+  }
+  
+  /**
+   * Get all tokens
+   * @returns {Promise<object>} All tokens
+   */
+  async getAllTokens() {
+    const response = await fetch(`${this.apiUrl}/api/tokens`);
+    return response.json();
+  }
+  
+  /**
+   * Get token by address
+   * @param {string} address - Token address
+   * @returns {Promise<object>} Token details
+   */
+  async getToken(address) {
+    const response = await fetch(`${this.apiUrl}/api/tokens/${address}`);
+    return response.json();
+  }
+  
+  /**
+   * Update token metadata
+   * @param {string} address - Token address
+   * @param {object} params - Update parameters
+   * @param {string} params.developer - Developer ID (must be creator)
+   * @param {string} [params.description] - Token description
+   * @param {string} [params.website] - Website URL
+   * @param {string} [params.twitter] - Twitter handle
+   * @returns {Promise<object>} Update result
+   */
+  async updateMetadata(address, { developer, description, website, twitter }) {
+    const metadata = {};
+    if (description) metadata.description = description;
+    if (website) metadata.website = website;
+    if (twitter) metadata.twitter = twitter;
+    
+    const response = await fetch(`${this.apiUrl}/api/tokens/${address}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ metadata, developer })
+    });
+    
+    return response.json();
+  }
+  
+  /**
+   * Get developer fee statistics
+   * @param {string} developer - Developer ID
+   * @returns {Promise<object>} Fee stats
+   */
+  async getDeveloperStats(developer) {
+    const response = await fetch(`${this.apiUrl}/api/tokens/fees/${developer}`);
+    return response.json();
+  }
+}
+
+// Export convenience function
+export function createKogaionToken(config = {}) {
+  return new KogaionTokenLaunchpad(config);
+}

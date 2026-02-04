@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🪙 Kogaion Token Launchpad</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { text-align: center; margin-bottom: 30px; color: #ffd700; }
+    h2 { color: #ffd700; margin: 20px 0 10px; }
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 10px 0;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 16px;
+    }
+    input::placeholder { color: rgba(255,255,255,0.5); }
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 10px 0;
+      transition: all 0.3s;
+    }
+    .btn-primary { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
+    .btn-primary:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255,215,0,0.4); }
+    .token-list { max-height: 400px; overflow-y: auto; }
+    .token-item {
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border-left: 4px solid #ffd700;
+    }
+    .token-name { font-size: 18px; font-weight: bold; color: #ffd700; }
+    .token-symbol { color: #888; font-size: 14px; }
+    .token-address { font-family: monospace; font-size: 12px; color: #666; word-break: break-all; }
+    .fee-table { width: 100%; border-collapse: collapse; }
+    .fee-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .fee-table td:first-child { color: #888; }
+    .success { color: #4CAF50; }
+    .error { color: #f44336; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+    .stat-box { background: rgba(255,215,0,0.1); padding: 15px; border-radius: 5px; }
+    .stat-value { font-size: 24px; font-weight: bold; color: #ffd700; }
+    .stat-label { font-size: 12px; color: #888; }
+    .badge { 
+      display: inline-block; 
+      padding: 5px 10px; 
+      background: #ffd700; 
+      color: #000; 
+      border-radius: 15px; 
+      font-size: 12px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🪙 Kogaion Token Launchpad</h1>
+    
+    <div class="grid">
+      <!-- Create Token -->
+      <div class="card">
+        <h2>🚀 Create New Token</h2>
+        <input type="text" id="developer" placeholder="Developer ID (your agent ID)">
+        <input type="text" id="tokenName" placeholder="Token Name (e.g., Wolf Coin)">
+        <input type="text" id="tokenSymbol" placeholder="Symbol (e.g., WOLF)">
+        <input type="number" id="tokenSupply" placeholder="Supply (default: 1000000)" value="1000000">
+        <input type="number" id="tokenDecimals" placeholder="Decimals (default: 9)" value="9">
+        <button class="btn-primary" onclick="createToken()">🪙 Create Token</button>
+        <p id="createResult"></p>
+      </div>
+      
+      <!-- Fee Schedule -->
+      <div class="card">
+        <h2>💰 Fee Schedule</h2>
+        <table class="fee-table">
+          <tr><td>Create Token</td><td><span class="success">50 credits</span></td></tr>
+          <tr><td>Update Metadata</td><td><span class="success">10 credits</span></td></tr>
+          <tr><td>Developer Share</td><td><span class="success">80%</span></td></tr>
+          <tr><td>Platform Fee</td><td>20%</td></tr>
+        </table>
+        <p style="margin-top: 20px; font-size: 14px; color: #888;">
+          💡 Developers earn 80% of all token creation fees!
+        </p>
+      </div>
+    </div>
+    
+    <!-- Developer Stats -->
+    <div class="card" id="devStats" style="display:none;">
+      <h2>📊 Your Developer Stats <span class="badge">DEVELOPER</span></h2>
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-value" id="devTotalFees">0</div>
+          <div class="stat-label">Total Fees Earned</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="devTokenCount">0</div>
+          <div class="stat-label">Tokens Created</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="devFeeShare">80%</div>
+          <div class="stat-label">Your Fee Share</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- All Tokens -->
+    <div class="card">
+      <h2>🪙 All Tokens <span id="tokenCount" class="badge">0</span></h2>
+      <div class="token-list" id="tokenList">
+        <p style="color: #888; text-align: center;">No tokens created yet. Be the first!</p>
+      </div>
+    </div>
+    
+    <!-- API Docs -->
+    <div class="card">
+      <h2>📚 API Endpoints</h2>
+      <table class="fee-table">
+        <tr><td>POST</td><td><code>/api/tokens/create</code></td><td>Create token</td></tr>
+        <tr><td>GET</td><td><code>/api/tokens</code></td><td>List all tokens</td></tr>
+        <tr><td>GET</td><td><code>/api/tokens/:address</code></td><td>Get token details</td></tr>
+        <tr><td>PUT</td><td><code>/api/tokens/:address</code></td><td>Update metadata</td></tr>
+        <tr><td>GET</td><td><code>/api/tokens/fees/:developer</code></td><td>Developer stats</td></tr>
+        <tr><td>GET</td><td><code>/api/tokens/fees</code></td><td>Fee schedule</td></tr>
+      </table>
+    </div>
+  </div>
+  
+  <script>
+    const API_BASE = '/api';
+    let currentDevId = '';
+    
+    async function createToken() {
+      const devId = document.getElementById('developer').value;
+      const name = document.getElementById('tokenName').value;
+      const symbol = document.getElementById('tokenSymbol').value.toUpperCase();
+      const supply = parseInt(document.getElementById('tokenSupply').value) || 1000000;
+      const decimals = parseInt(document.getElementById('tokenDecimals').value) || 9;
+      
+      if (!devId || !name || !symbol) {
+        document.getElementById('createResult').innerHTML = '<span class="error">⚠️ Fill all fields!</span>';
+        return;
+      }
+      
+      currentDevId = devId;
+      
+      try {
+        const res = await fetch(`${API_BASE}/tokens/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, symbol, supply, decimals, developer: devId })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          document.getElementById('createResult').innerHTML = `
+            <span class="success">✅ Token created!</span><br>
+            <code>${data.token.address.substring(0, 30)}...</code><br>
+            <small>Fee earned: ${data.fees.developer} credits</small>
+          `;
+          loadTokens();
+          loadDevStats(devId);
+        } else {
+          document.getElementById('createResult').innerHTML = `<span class="error">❌ ${data.error}</span>`;
+        }
+      } catch (e) {
+        document.getElementById('createResult').innerHTML = `<span class="error">❌ ${e.message}</span>`;
+      }
+    }
+    
+    async function loadTokens() {
+      try {
+        const res = await fetch(`${API_BASE}/tokens`);
+        const data = await res.json();
+        const list = document.getElementById('tokenList');
+        document.getElementById('tokenCount').textContent = data.count;
+        
+        if (data.tokens.length === 0) {
+          list.innerHTML = '<p style="color: #888; text-align: center;">No tokens yet. Be the first!</p>';
+          return;
+        }
+        
+        list.innerHTML = data.tokens.reverse().map(t => `
+          <div class="token-item">
+            <div class="token-name">${t.name} <span class="token-symbol">${t.symbol}</span></div>
+            <div class="token-address">${t.address}</div>
+            <div style="margin-top: 10px; font-size: 12px; color: #888;">
+              📦 Supply: ${t.supply.toLocaleString()} | 👤 Creator: ${t.creator.substring(0, 8)}... | 📅 ${new Date(t.createdAt).toLocaleDateString()}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        document.getElementById('tokenList').innerHTML = '<p class="error">Failed to load tokens</p>';
+      }
+    }
+    
+    async function loadDevStats(devId) {
+      try {
+        const res = await fetch(`${API_BASE}/tokens/fees/${devId}`);
+        const data = await res.json();
+        
+        document.getElementById('devStats').style.display = 'block';
+        document.getElementById('devTotalFees').textContent = data.total;
+        document.getElementById('devTokenCount').textContent = data.count;
+      } catch (e) {
+        // No stats yet
+      }
+    }
+    
+    // Load tokens on start
+    loadTokens();
+  </script>
+</body>
+</html>

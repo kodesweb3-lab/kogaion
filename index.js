@@ -561,6 +561,70 @@ app.get('/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
+// ============== TOKEN LAUNCHPAD API ==============
+import { createToken, getToken, getAllTokens, getDeveloperStats, updateMetadata, getFeeSchedule } from './token-launchpad.js';
+
+// Fee schedule
+app.get('/api/tokens/fees', (req, res) => {
+  res.json(getFeeSchedule());
+});
+
+// Create token
+app.post('/api/tokens/create', (req, res) => {
+  try {
+    const { name, symbol, decimals, supply, developer } = req.body;
+    
+    if (!name || !symbol || !developer) {
+      return res.status(400).json({ 
+        error: 'Missing required fields',
+        required: ['name', 'symbol', 'developer']
+      });
+    }
+    
+    const result = createToken({ name, symbol, decimals, supply, developer });
+    res.json(result);
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+// Get all tokens
+app.get('/api/tokens', (req, res) => {
+  res.json({ 
+    tokens: getAllTokens(),
+    count: getAllTokens().length 
+  });
+});
+
+// Get token by address
+app.get('/api/tokens/:address', (req, res) => {
+  const token = getToken(req.params.address);
+  if (!token) {
+    return res.status(404).json({ error: 'Token not found' });
+  }
+  res.json({ token });
+});
+
+// Update token metadata
+app.put('/api/tokens/:address', (req, res) => {
+  try {
+    const { metadata, developer } = req.body;
+    const token = updateMetadata(req.params.address, metadata, developer);
+    res.json({ success: true, token });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+// Get developer fee stats
+app.get('/api/tokens/fees/:developer', (req, res) => {
+  const stats = getDeveloperStats(req.params.developer);
+  res.json({ 
+    developer: req.params.developer,
+    ...stats
+  });
+});
+
 // ============== START ==============
 
 const PORT = process.env.PORT || CONFIG.PORT;
