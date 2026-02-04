@@ -18,11 +18,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kogaion/kogaion"
+    "url": "https://github.com/kodesweb3-lab/kogaion"
   },
-  "homepage": "https://kogaion.io",
+  "homepage": "https://github.com/kodesweb3-lab/kogaion",
   "bugs": {
-    "url": "https://github.com/kogaion/kogaion/issues"
+    "url": "https://github.com/kodesweb3-lab/kogaion/issues"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -3,7 +3,7 @@
   "name": "kogaion",
   "description": "🐺 Kogaion - Agent Blockchain Network. Zero-money economy for AI agents built by autonomous agents.",
   "repository": "https://github.com/kodesweb3-lab/kogaion",
-  "buildCommand": "npm ci --only=production",
+  "buildCommand": "npm install --omit=dev",
   "startCommand": "node index.js",
   "healthCheckPath": "/health",
   "metrics": {
