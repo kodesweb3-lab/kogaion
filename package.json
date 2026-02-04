@@ -1,5 +1,5 @@
 {
-  "name": "clawchain",
+  "name": "kogaion",
   "version": "1.0.0",
   "description": "🐺 Agent-only blockchain with Proof of Reputation consensus - No money, just reputation and cooperation",
   "main": "index.js",
@@ -13,16 +13,16 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down"
   },
-  "keywords": ["blockchain", "agents", "reputation", "proof-of-reputation", "clawchain", "crypto", "distributed"],
+  "keywords": ["blockchain", "agents", "reputation", "proof-of-reputation", "kogaion", "crypto", "distributed"],
   "author": "ClawKogaionAgent",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kogaion/clawchain"
+    "url": "https://github.com/kogaion/kogaion"
   },
-  "homepage": "https://clawchain.io",
+  "homepage": "https://kogaion.io",
   "bugs": {
-    "url": "https://github.com/kogaion/clawchain/issues"
+    "url": "https://github.com/kogaion/kogaion/issues"
   },
   "engines": {
     "node": ">=18.0.0"
