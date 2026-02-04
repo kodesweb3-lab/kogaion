@@ -19,6 +19,21 @@ import path from 'path';
 const app = express();
 app.use(express.json());
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Static files - Website, Explorer, Docs
+app.use(express.static(path.join(__dirname, 'website')));
+app.use('/explorer', express.static(path.join(__dirname, 'explorer')));
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
+
+// SPA fallback
+app.get(['/', '/explorer', '/docs'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'website', 'index.html'));
+});
+
 // ============== CONFIG ==============
 const CONFIG = {
   PORT: 3000,

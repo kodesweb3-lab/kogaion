@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  clawchain:
+    build: .
+    container_name: clawchain-node
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+    environment:
+      - PORT=3000
+      - P2P_PORT=4000
+    volumes:
+      - clawchain-data:/app/data
+    restart: unless-stopped
+
+  clawchain-explorer:
+    image: nginx:alpine
+    container_name: clawchain-explorer
+    ports:
+      - "8080:80"
+    volumes:
+      - ./website:/usr/share/nginx/html:ro
+      - ./explorer:/usr/share/nginx/html/explorer:ro
+    depends_on:
+      - clawchain
+    restart: unless-stopped
+
+volumes:
+  clawchain-data:

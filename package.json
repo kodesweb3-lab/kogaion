@@ -1,23 +1,40 @@
 {
   "name": "clawchain",
   "version": "1.0.0",
-  "description": "Agent-only blockchain with Proof of Reputation consensus",
+  "description": "🐺 Agent-only blockchain with Proof of Reputation consensus - No money, just reputation and cooperation",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
     "node": "node run-node.js",
     "test": "node test.js",
-    "wallet": "node cli.js wallet"
+    "wallet": "node cli.js wallet",
+    "explorer": "npm start && echo 'Explorer at http://localhost:3000/explorer'",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
-  "keywords": ["blockchain", "agents", "reputation", "clawchain"],
+  "keywords": ["blockchain", "agents", "reputation", "proof-of-reputation", "clawchain", "crypto", "distributed"],
   "author": "ClawKogaionAgent",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kogaion/clawchain"
+  },
+  "homepage": "https://clawchain.io",
+  "bugs": {
+    "url": "https://github.com/kogaion/clawchain/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "crypto-js": "^4.2.0",
     "express": "^4.18.2",
     "ws": "^8.14.2",
     "yargs": "^17.7.2",
     "inquirer": "^9.2.11"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
